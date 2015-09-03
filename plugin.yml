@@ -1,0 +1,6 @@
+name: MyOwnWorld
+version: 1.0.0
+api: [1.8.0]
+author: Zzm
+description: The Moster AI API
+main: MyOwnWorld\MyOwnWorld
