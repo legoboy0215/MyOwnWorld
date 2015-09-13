@@ -234,7 +234,7 @@ class MyOwnWorld extends PluginBase implements Listener{
 		$zo->setMaxHealth($maxHealth);
 		$zo->setHealth($health);
 		$zo->spawnToAll();
-		$this->getLogger()->info("生成了一只苦力怕");
+		//$this->getLogger()->info("生成了一只苦力怕");
 	}
 
 	/**
