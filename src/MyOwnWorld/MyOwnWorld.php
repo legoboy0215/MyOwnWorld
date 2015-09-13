@@ -6,6 +6,7 @@ use MyOwnWorld\AI\ZombieAI;
 use MyOwnWorld\AI\CreeperAI;
 use MyOwnWorld\AI\SkeletonAI;
 use MyOwnWorld\AI\CowAI;
+use MyOwnWorld\AI\PigAI;
 use pocketmine\level\Position;
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
@@ -31,6 +32,7 @@ use pocketmine\scheduler\TaskHandler;
 use MyOwnWorld\Entities\Creeper;
 use MyOwnWorld\Entities\Skeleton;
 use MyOwnWorld\Entities\Cow;
+use MyOwnWorld\Entities\Pig;
 
 class MyOwnWorld extends PluginBase implements Listener{
 	public $ZombieAI;
@@ -42,6 +44,7 @@ class MyOwnWorld extends PluginBase implements Listener{
 	public $Creeper = [];
 	public $Skeleton= [];
 	public $Cow = [];
+	public $Pig = [];
 //	public $zombie = [];
 //	public $Creeper = [];
 //	public $Skeleton= [];
@@ -239,6 +242,12 @@ class MyOwnWorld extends PluginBase implements Listener{
 		//$this->getLogger()->info("生成了一只骷髅弓箭手");
 	}
 	
+	/**
+	 * @param Position $pos 出生位置坐标(世界)
+	 * @param int $maxHealth 最高血量
+	 * @param int $health 血量
+	 * 出生一只牛在某坐标
+	 */
 	public function spawnCow(Position $pos, $maxHealth = 20, $health = 20) {
 		$chunk = $pos->level->getChunk($pos->x >> 4, $pos->z >> 4, false);
 		$nbt = $this->getNBT();
@@ -247,7 +256,24 @@ class MyOwnWorld extends PluginBase implements Listener{
 		$zo->setMaxHealth($maxHealth);
 		$zo->setHealth($health);
 		$zo->spawnToAll();
-		//$this->getLogger()->info("生成了一只骷髅弓箭手");
+		//$this->getLogger()->info("生成了一只牛");
+	}
+	
+	/**
+	 * @param Position $pos 出生位置坐标(世界)
+	 * @param int $maxHealth 最高血量
+	 * @param int $health 血量
+	 * 出生一只豬在某坐标
+	 */
+	public function spawnPig(Position $pos, $maxHealth = 20, $health = 20) {
+		$chunk = $pos->level->getChunk($pos->x >> 4, $pos->z >> 4, false);
+		$nbt = $this->getNBT();
+		$zo = new Pig($chunk,$nbt);
+		$zo->setPosition($pos);
+		$zo->setMaxHealth($maxHealth);
+		$zo->setHealth($health);
+		$zo->spawnToAll();
+		//$this->getLogger()->info("生成了一只豬");
 	}
 
 	/**
@@ -443,7 +469,7 @@ class MyOwnWorld extends PluginBase implements Listener{
 	public function RotationTimer() {
 		foreach ($this->getServer()->getLevels() as $level) {
 			foreach ($level->getEntities() as $entity){
-				if($entity instanceof Zombie or $entity instanceof Creeper or $entity instanceof Skeleton or $entity instanceof Cow ){
+				if($entity instanceof Zombie or $entity instanceof Creeper or $entity instanceof Skeleton or $entity instanceof Cow or $entity instanceof Pig ){
 					if(count($entity->getViewers()) != 0) {
 						if ($entity instanceof Zombie) {
 							$array = &$this->zombie;
@@ -456,6 +482,9 @@ class MyOwnWorld extends PluginBase implements Listener{
 						}
 						elseif ($entity instanceof Cow) {
 							$array = &$this->Cow;
+						}
+						elseif ($entity instanceof Pig) {
+							$array = &$this->Pig;
 						}
 						if(isset($array[$entity->getId()])){
 							$yaw0 = $entity->yaw;  //实际yaw
@@ -861,8 +890,14 @@ class MyOwnWorld extends PluginBase implements Listener{
 								}
 								if($random == 2){
 								$pos = new Position($v3->x,$v3->y,$v3->z,$level);
-								$this->spawnCow($pos);  //生成骷髅
-								//$this->getLogger()->info("生成1骷髅");
+								$this->spawnCow($pos);  //生成牛
+								//$this->getLogger()->info("生成1牛");
+								break;
+								}
+								if($random == 2){
+								$pos = new Position($v3->x,$v3->y,$v3->z,$level);
+								$this->spawnPig($pos);  //生成豬
+								//$this->getLogger()->info("生成1豬");
 								break;
 								}
 							//}
@@ -885,6 +920,9 @@ class MyOwnWorld extends PluginBase implements Listener{
 			}
 			elseif ($entity instanceof Cow) {
 				$array = &$this->Cow;
+			}
+			elseif ($entity instanceof Pig) {
+				$array = &$this->Pig;
 			}
 			elseif ($entity instanceof Skeleton) {
 				$array = &$this->Skeleton;
@@ -937,6 +975,10 @@ class MyOwnWorld extends PluginBase implements Listener{
 			if (isset($this->Cow[$entity->getId()])) {
 				$entity->setPosition($v3);
 				$this->Cow[$entity->getId()]['knockBack'] = false;
+			}
+			if (isset($this->Pig[$entity->getId()])) {
+				$entity->setPosition($v3);
+				$this->Pig[$entity->getId()]['knockBack'] = false;
 			}
 			if (isset($this->Skeleton[$entity->getId()])) {
 				$entity->setPosition($v3);
