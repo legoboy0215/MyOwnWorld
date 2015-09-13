@@ -16,7 +16,7 @@ class PigAI{
 
     private $plugin;
     
-    public $width = 0.4;  
+    public $width = 0.3;  
     private $dif = 0;
 
 
@@ -98,7 +98,7 @@ class PigAI{
                             elseif ($zom['gotimer'] >= 20 and $zom['gotimer'] <= 24) {
                                 $zom['motionx'] = 0;
                                 $zom['motionz'] = 0;
-                                //僵尸停止
+                                //豬停止
                             }
 
                             $zom['gotimer'] += 0.5;
@@ -137,7 +137,7 @@ class PigAI{
                                 }
                             }
 
-                            if ($zom['motionx'] == 0 and $zom['motionz'] == 0) {  //僵尸停止
+                            if ($zom['motionx'] == 0 and $zom['motionz'] == 0) {  //豬停止
                             }
                             else {
                                 //转向计算

@@ -16,7 +16,7 @@ class SheepAI{
 
     private $plugin;
     
-    public $width = 0.4;  
+    public $width = 0.3;  
     private $dif = 0;
 
 
@@ -98,7 +98,7 @@ class SheepAI{
                             elseif ($zom['gotimer'] >= 20 and $zom['gotimer'] <= 24) {
                                 $zom['motionx'] = 0;
                                 $zom['motionz'] = 0;
-                                //僵尸停止
+                                //羊停止
                             }
 
                             $zom['gotimer'] += 0.5;
