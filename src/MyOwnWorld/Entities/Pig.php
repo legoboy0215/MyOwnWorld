@@ -40,7 +40,7 @@ class Pig extends Animal{
 	
 	public function getDrops(){
 		$drops = [
-			ItemItem::get(ItemItem::WHEAT, 0, 2)
+			ItemItem::get(ItemItem::RAW_PORKCHOP, 0, 2)
 		];
 		if($this->lastDamageCause instanceof EntityDamageByEntityEvent and $this->lastDamageCause->getEntity() instanceof Player){
 			if(\mt_rand(0, 199) < 5){

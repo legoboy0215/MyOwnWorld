@@ -7,12 +7,12 @@ use pocketmine\Player;
 use pocketmine\math\Vector3;
 use pocketmine\math\Vector2;
 use pocketmine\entity\Entity;
-use MyOwnWorld\Entities\Cow;
+use MyOwnWorld\Entities\Pig;
 use pocketmine\scheduler\CallbackTask;
 use pocketmine\network\protocol\SetEntityMotionPacket;
 use pocketmine\event\entity\EntityDamageEvent;
 
-class CowAI{
+class PigAI{
 
     private $plugin;
     
@@ -24,12 +24,12 @@ class CowAI{
    $this->plugin = $plugin;
         $this->plugin->getServer()->getScheduler ()->scheduleRepeatingTask ( new CallbackTask ( [
             $this,
-            "CowRandomWalkCalc"
+            "PigRandomWalkCalc"
         ] ), 10);
 
         $this->plugin->getServer()->getScheduler ()->scheduleRepeatingTask ( new CallbackTask ( [
             $this,
-            "CowRandomWalk"
+            "PigRandomWalk"
         ] ), 1);
         $this->plugin->getServer()->getScheduler ()->scheduleRepeatingTask ( new CallbackTask ( [
             $this,
@@ -38,15 +38,15 @@ class CowAI{
 
     }
 
-	public function CowRandomWalkCalc() {
+	public function PigRandomWalkCalc() {
         $this->dif = $this->plugin->getServer()->getDifficulty();
-        //$this->getLogger()->info("牛数量：".count($this->plugin->Cow));
+        //$this->getLogger()->info("猪数量：".count($this->plugin->Pig));
         foreach ($this->plugin->getServer()->getLevels() as $level) {
             foreach ($level->getEntities() as $zo){
-                if($zo instanceof Cow){
+                if($zo instanceof Pig){
                     if ($this->plugin->willMove($zo)) {
-                        if (!isset($this->plugin->Cow[$zo->getId()])){
-                            $this->plugin->Cow[$zo->getId()] = array(
+                        if (!isset($this->plugin->Pig[$zo->getId()])){
+                            $this->plugin->Pig[$zo->getId()] = array(
                                 'ID' => $zo->getId(),
                                 'IsChasing' => false,
                                 'motionx' => 0,
@@ -73,12 +73,12 @@ class CowAI{
                                 'canAttack' => 0,
                                 'knockBack' => false,
                             );
-                            $zom = &$this->plugin->Cow[$zo->getId()];
+                            $zom = &$this->plugin->Pig[$zo->getId()];
                             $zom['x'] = $zo->getX();
                             $zom['y'] = $zo->getY();
                             $zom['z'] = $zo->getZ();
                         }
-                        $zom = &$this->plugin->Cow[$zo->getId()];
+                        $zom = &$this->plugin->Pig[$zo->getId()];
 
                         if ($zom['IsChasing'] === false) {  //自由行走模式
                             if ($zom['gotimer'] == 0 or $zom['gotimer'] == 10) {
@@ -98,7 +98,7 @@ class CowAI{
                             elseif ($zom['gotimer'] >= 20 and $zom['gotimer'] <= 24) {
                                 $zom['motionx'] = 0;
                                 $zom['motionz'] = 0;
-                                //牛停止
+                                //豬停止
                             }
 
                             $zom['gotimer'] += 0.5;
@@ -137,7 +137,7 @@ class CowAI{
                                 }
                             }
 
-                            if ($zom['motionx'] == 0 and $zom['motionz'] == 0) {  //牛停止
+                            if ($zom['motionx'] == 0 and $zom['motionz'] == 0) {  //豬停止
                             }
                             else {
                                 //转向计算
@@ -166,12 +166,12 @@ class CowAI{
         }
     }
 
-	public function CowRandomWalk() {
+	public function PigRandomWalk() {
         foreach ($this->plugin->getServer()->getLevels() as $level) {
             foreach ($level->getEntities() as $zo) {
-                if ($zo instanceof Cow) {
-                    if (isset($this->plugin->Cow[$zo->getId()])) {
-                        $zom = &$this->plugin->Cow[$zo->getId()];
+                if ($zo instanceof Pig) {
+                    if (isset($this->plugin->Pig[$zo->getId()])) {
+                        $zom = &$this->plugin->Pig[$zo->getId()];
                         if ($zom['canAttack'] != 0) {
                             $zom['canAttack'] -= 1;
                         }
@@ -225,11 +225,11 @@ class CowAI{
     }
 
     public function array_clear() {
-        if (count($this->plugin->Cow) != 0) {
-            foreach ($this->plugin->Cow as $eid=>$info) {
+        if (count($this->plugin->Pig) != 0) {
+            foreach ($this->plugin->Pig as $eid=>$info) {
                 foreach ($this->plugin->getServer()->getLevels() as $level) {
                     if (!($level->getEntity($eid) instanceof Entity)) {
-                        unset($this->plugin->Cow[$eid]);
+                        unset($this->plugin->Pig[$eid]);
                         //echo "清除 $eid \n";
                     }
                 }
