@@ -26,11 +26,11 @@ class SkeletonAI{
 
     private $plugin;
     
-    public $width = 0.6;  //骷髅宽度
+    public $width = 0.4;  //僵尸宽度
     private $dif = 0;
 
     public $hatred_r = 16;  //仇恨半径
-    public $zo_hate_v = 1.4; //骷髅仇恨模式下的行走速度
+    public $zo_hate_v = 1.4; //僵尸仇恨模式下的行走速度
 
     public function __construct(MyOwnWorld $plugin){
         $this->plugin = $plugin;
@@ -76,13 +76,9 @@ class SkeletonAI{
         }
     }
 
-    /**
-     * 骷髅初始化，常规化及自由行走模式循环计时器
-     * 循环间隔：20 ticks
-     */
     public function SkeletonRandomWalkCalc() {
         $this->dif = $this->plugin->getServer()->getDifficulty();
-        //$this->getLogger()->info("骷髅数量：".count($this->plugin->Skeleton));
+        //$this->getLogger()->info("僵尸数量：".count($this->plugin->Skeleton));
         foreach ($this->plugin->getServer()->getLevels() as $level) {
             foreach ($level->getEntities() as $zo){
                 if($zo instanceof Skeleton){
@@ -141,7 +137,7 @@ class SkeletonAI{
                             elseif ($zom['gotimer'] >= 20 and $zom['gotimer'] <= 24) {
                                 $zom['motionx'] = 0;
                                 $zom['motionz'] = 0;
-                                //骷髅停止
+                                //僵尸停止
                             }
 
                             $zom['gotimer'] += 0.5;
@@ -180,7 +176,7 @@ class SkeletonAI{
                                 }
                             }
 
-                            if ($zom['motionx'] == 0 and $zom['motionz'] == 0) {  //骷髅停止
+                            if ($zom['motionx'] == 0 and $zom['motionz'] == 0) {  //僵尸停止
                             }
                             else {
                                 //转向计算
@@ -190,7 +186,7 @@ class SkeletonAI{
                                 $zom['pitch'] = 0;
                             }
 
-                            //更新骷髅坐标
+                            //更新僵尸坐标
                             if (!$zom['knockBack']) {
                                 $zom['x'] = $pos2->getX();
                                 $zom['z'] = $pos2->getZ();
@@ -209,10 +205,6 @@ class SkeletonAI{
         }
     }
 
-    /**
-     * 骷髅仇恨刷新计时器
-     * 循环间隔：10 ticks
-     */
     public function SkeletonHateFinder() {
         foreach ($this->plugin->getServer()->getLevels () as $level) {
             foreach ($level->getEntities() as $zo) {
@@ -245,10 +237,6 @@ class SkeletonAI{
         }
     }
 
-    /**
-     * 骷髅仇恨模式坐标更新计时器
-     * 循环间隔：10 ticks
-     */
     public function SkeletonHateWalk() {
         foreach ($this->plugin->getServer()->getLevels () as $level) {
             foreach ($level->getEntities() as $zo) {
@@ -260,7 +248,7 @@ class SkeletonAI{
                             $zom['oldv3'] = $zo->getLocation();
                             $zom['canjump'] = true;
 
-                            //骷髅碰撞检测 by boybook
+                            //僵尸碰撞检测 by boybook
                             foreach ($level->getEntities() as $zo0) {
                                 if ($zo0 instanceof Skeleton and !($zo0 == $zo)) {
                                     if ($zo->distance($zo0) <= $this->width * 2) {
@@ -310,7 +298,7 @@ class SkeletonAI{
                                         $bi = 0;
                                     }
 
-                                    //根据wiki：骷髅掉血后走路更快
+                                    //根据wiki：僵尸掉血后走路更快
                                     if ($zo->getHealth() == $zo->getMaxHealth()) {
                                         $zzz = sqrt(($this->zo_hate_v / 2.5) / ($bi * $bi + 1));
                                     }else{
@@ -334,7 +322,7 @@ class SkeletonAI{
                                     //$width = $this->width;
                                     $pos0 = new Vector3 ($zo->getX(), $zo->getY() + 1, $zo->getZ());  //原坐标
                                     $pos = new Vector3 ($zo->getX() + $xxx, $zo->getY() + 1, $zo->getZ() + $zzz);  //目标坐标
-                                    //用来写骷髅宽度的
+                                    //用来写僵尸宽度的
                                     //$v = $this->zo_hate_v/2;
                                     //$pos_front = new Vector3 ($zo->getX() + ($xxx/$v*($v+$this->width)), $zo->getY() + 1, $zo->getZ() + ($zzz/$v*($v+$this->width)));  //前方坐标
                                     //$pos_back = new Vector3 ($zo->getX() + (-$xxx/$v*(-$v-$this->width)), $zo->getY() + 1, $zo->getZ() + (-$zzz/$v*(-$v-$this->width)));  //后方坐标
@@ -344,7 +332,7 @@ class SkeletonAI{
                                         //真正的自由落体 by boybook
                                         if ($this->plugin->ifjump($zo->getLevel(), $pos0, false) === false) { //原坐标依然是悬空
                                             if ($zom['drop'] === false) {
-                                                $zom['drop'] = 0;  //骷髅下落的速度
+                                                $zom['drop'] = 0;  //僵尸下落的速度
                                             }
                                             $pos2 = new Vector3 ($zo->getX(), $zo->getY() - ($zom['drop'] / 2 + 1.25), $zo->getZ());  //下降
                                         } else {
@@ -393,12 +381,6 @@ class SkeletonAI{
         }
     }
 
-    /**
-     * 高密集型发包计时器
-     * - 发送数据包
-     * - 计算自由落体相关数据
-     * 循环间隔：1 tick
-     */
     public function SkeletonRandomWalk() {
         foreach ($this->plugin->getServer()->getLevels() as $level) {
             foreach ($level->getEntities() as $zo) {
@@ -594,11 +576,6 @@ class SkeletonAI{
 		return $yaw;
 	}
 	
-	
-    /**
-     * 骷髅着火计时器
-     * PM时间修复
-     */
     public function SkeletonFire() {
         foreach ($this->plugin->getServer()->getLevels() as $level) {
             foreach ($level->getEntities() as $zo){
