@@ -16,3 +16,8 @@ Just two ban in chinese:
 
 - 那个盗用我插件还讲歪理的我祝你全家灵车漂移
 - 那个傻逼的qq我挂一下：1423892376
+
+=========================================
+Donate/捐款
+- 如果你支持本插件，欢迎打款至支付宝admin@fdtmc.tk来资助本插件的开发,谢谢。
+- If you want to donate for this plugin ,you can give money to paypal account Zzm317@outlook.com ,Thank you.
