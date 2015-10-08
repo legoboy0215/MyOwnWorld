@@ -1,10 +1,9 @@
 # MyOwnWorld
 A new AI for all animals
 
-
+```txt
 -=============
 Welcome to join the development of this plugin , I don't have enough time for I have to prepare for the '高考'.Just a exam to join a university.
-
 -=============
 Just two ban in chinese:
 - 禁止转载，禁止使用源码
@@ -21,3 +20,4 @@ Just two ban in chinese:
 Donate/捐款
 - 如果你支持本插件，欢迎打款至支付宝admin@fdtmc.tk来资助本插件的开发,谢谢。
 - If you want to donate for this plugin ,you can give money to paypal account Zzm317@outlook.com ,Thank you.
+```
